@@ -42,3 +42,20 @@ app.post("/api/notes", function (req, res) {
       res.json(note);
     });
 });
+
+// Wildcard route to direct users to a 404 page
+app.get("/notes", function (req, res) {
+  res.sendFile(path.json(__dirname, "./develop/public/notes.html"));
+});
+
+app.get("/", function (req, res) {
+  res.sendFile(path.json(__dirname, "./develop/public/index.html"));
+});
+
+app.get("*", function (req, res) {
+  res.sendFile(path.json(__dirname, "./develop/public/index.html"));
+});
+
+app.listen(PORT, function () {
+  console.log("App listening on PORT" + PORT);
+});
