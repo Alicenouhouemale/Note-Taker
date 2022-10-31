@@ -19,10 +19,26 @@ app.use(express.urlencoded({ entended: true }));
 
 app.use(express.static("./develop/public"));
 
-// GET Route for homepage
-app.get("./api/notes", function (req, res) {
+// API Route for "GET" request
+app.get("/api/notes", function (req, res) {
   readFileAsync("./develop/db/db.json", "utf-8").then(function (data) {
     notes = [].concat(JSON.parse(data));
     res.json(notes);
   });
+});
+
+// API Route for "POST" request
+app.post("/api/notes", function (req, res) {
+  const note = req.body;
+  readFileAsync("./develop/db/db.json", "utf-8")
+    .then(function (data) {
+      const notes = [].concat(JSON.parse(data));
+      note.id = notes.length + 1;
+      notes.push(note);
+      return notes;
+    })
+    .then(function (notes) {
+      writeFileAsync("./develop/db/db.json", JSON.stringify(notes));
+      res.json(note);
+    });
 });
